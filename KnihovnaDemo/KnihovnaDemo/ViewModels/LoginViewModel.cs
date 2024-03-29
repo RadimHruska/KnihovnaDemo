@@ -5,6 +5,7 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using KnihovnaDemo.Functions;
 
 namespace KnihovnaDemo.ViewModels
 {
@@ -12,8 +13,35 @@ namespace KnihovnaDemo.ViewModels
     {
         private string _username;
         private string _password;
+        private string _errorMessage;
+        private bool _isVisible = true;
+        public LoginFunctions LoginFunctions = new LoginFunctions();
 
 
+        public bool IsVisible
+        {
+            get
+            {
+                return _isVisible;
+            }
+            set
+            {
+                _isVisible = value;
+                OnPropertyChanged(nameof(IsVisible));
+            }
+        }
+        public string ErrorMessage
+        {
+            get 
+            {
+                return _errorMessage; 
+            }
+            set 
+            { 
+                _errorMessage = value;
+                OnPropertyChanged(nameof(ErrorMessage));
+            }
+        }
         public string Username
         {
             get
@@ -41,8 +69,6 @@ namespace KnihovnaDemo.ViewModels
         {
             LoginCommad = new ViewModelCommand(LogIn, CanLogIn);
         }
- 
-
         private bool CanLogIn (object obj)
         {
             if (string.IsNullOrWhiteSpace(Username) || Password == null)
@@ -50,12 +76,19 @@ namespace KnihovnaDemo.ViewModels
                 return false;
             }
             else
-                 return true;
+                return true;
         }
-
         private void LogIn(object obj)
         {
-            
+            var isUserValid = LoginFunctions.AuthUser(Username, Password);
+
+            if (isUserValid)
+            {
+                IsVisible = false;
+            }
+            else
+                ErrorMessage = "Něco se nepovedlo";
+
         }
     }
 }

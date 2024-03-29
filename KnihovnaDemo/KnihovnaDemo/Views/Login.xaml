@@ -12,6 +12,14 @@
         <viewModel:LoginViewModel/>
     </Window.DataContext>
 
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
+    </Window.Resources>
+
+    <Window.Visibility>
+        <Binding Path="IsVisible" Mode="TwoWay" Converter="{StaticResource BooleanToVisibility}"/>
+    </Window.Visibility>
+
     <Grid>
         <TextBox HorizontalAlignment="Center"
                  Margin="0,299,0,0" 
@@ -37,6 +45,12 @@
                 Margin="0,389,0,0"
                 VerticalAlignment="Top" Click="Button_Click"
                 />
+        <TextBlock HorizontalAlignment="Left"
+                   Margin="380,0,0,0"
+                   TextWrapping="Wrap"
+                   Text="{Binding ErrorMessage}"
+                   VerticalAlignment="Center"
+                   Width="291"/>
 
     </Grid>
 </Window>
