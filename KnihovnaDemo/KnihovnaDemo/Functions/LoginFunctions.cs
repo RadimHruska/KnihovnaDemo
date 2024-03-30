@@ -29,11 +29,11 @@ namespace KnihovnaDemo.Functions
                         while (reader.Read())
                         {
                             user = new UserModel()
-                           {
-                               ID = int.Parse(reader[0].ToString()),
-                               Name = reader[1].ToString(),
-                               IsAdmin = true,
-                           };
+                            {
+                                ID = int.Parse(reader[0].ToString()),
+                                Name = reader[1].ToString(),
+                                IsAdmin = (reader["IsAdmin"].ToString().ToLower() == "true"),
+                            };
                         }
                     }
                     conn.Close();

@@ -13,6 +13,8 @@ namespace KnihovnaDemo
     {
         protected void ApplicationStart(object sender, StartupEventArgs e)
         {
+            try
+            {
             var loginView = new LoginWindow();
             loginView.Show();
             loginView.IsVisibleChanged += (s, ev) =>
@@ -24,6 +26,13 @@ namespace KnihovnaDemo
                     loginView.Close();
                 }
             };
+            }
+            catch (Exception)
+            {
+                //toto taky není úpně správně, ale tak co se dá dělat
+              
+            }
+           
         }
     }
 
