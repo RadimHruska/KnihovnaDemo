@@ -28,12 +28,10 @@ namespace KnihovnaDemo.Functions
                     {
                         while (reader.Read())
                         {
-                            user = new UserModel()
-                            {
-                                ID = int.Parse(reader[0].ToString()),
-                                Name = reader[1].ToString(),
-                                IsAdmin = (reader["IsAdmin"].ToString().ToLower() == "true"),
-                            };
+                            user = UserModel.Instance;
+                            UserModel.Instance.ID = int.Parse(reader[0].ToString());
+                            UserModel.Instance.Name = reader[1].ToString().Trim();
+                            UserModel.Instance.IsAdmin = (reader["IsAdmin"].ToString().ToLower().Trim() == "1") ? true : false;
                         }
                     }
                     conn.Close();

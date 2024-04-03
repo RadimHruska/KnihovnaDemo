@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using KnihovnaDemo.Functions;
+using KnihovnaDemo.Models;
 
 namespace KnihovnaDemo.ViewModels
 {
@@ -32,12 +33,12 @@ namespace KnihovnaDemo.ViewModels
         }
         public string ErrorMessage
         {
-            get 
+            get
             {
-                return _errorMessage; 
+                return _errorMessage;
             }
-            set 
-            { 
+            set
+            {
                 _errorMessage = value;
                 OnPropertyChanged(nameof(ErrorMessage));
             }
@@ -60,16 +61,16 @@ namespace KnihovnaDemo.ViewModels
                 return _password;
             }
             set {
-            _password = value;
+                _password = value;
                 OnPropertyChanged(nameof(Password));
             }
-        }  
+        }
         public ICommand LoginCommad { get; }
         public LoginViewModel()
         {
             LoginCommad = new ViewModelCommand(LogIn, CanLogIn);
         }
-        private bool CanLogIn (object obj)
+        private bool CanLogIn(object obj)
         {
             if (string.IsNullOrWhiteSpace(Username) || Password == null)
             {
@@ -82,12 +83,17 @@ namespace KnihovnaDemo.ViewModels
         {
             var isUserValid = LoginFunctions.AuthUser(Username, Password);
 
-            if (isUserValid)
+            if (isUserValid && UserModel.Instance.IsAdmin == true)
             {
                 IsVisible = false;
             }
             else
-                ErrorMessage = "Něco se nepovedlo";
+            {
+                    ErrorMessage = "Něco se nepovedlo";
+            }
+               
+
+
 
         }
     }

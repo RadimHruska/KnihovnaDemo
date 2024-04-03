@@ -10,7 +10,7 @@ namespace KnihovnaDemo
 {
     public abstract class Base
     {
-        private string _baseAddress = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\radim\OneDrive\Dokumenty\KnihovnaDemo\KnihovnaDemo\KnihovnaDemo\Views\Knihovna.mdf;Integrated Security=True";
+        private string _baseAddress = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\radim\OneDrive\Dokumenty\KnihovnaDemo\KnihovnaDemo\KnihovnaDemo\Knihovna.mdf;Integrated Security=True";
         public string BaseAddress { get { return _baseAddress; } }
 
         protected SqlConnection GetConnection()
