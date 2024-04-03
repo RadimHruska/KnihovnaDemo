@@ -39,5 +39,6 @@ namespace KnihovnaDemo.ViewModels
         {
             _executeAction(parameter);
         }
+
     }
 }

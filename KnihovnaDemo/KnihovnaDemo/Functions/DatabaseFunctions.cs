@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -76,6 +77,50 @@ namespace KnihovnaDemo.Functions
                 }
             }
             return users;  
+        }
+
+        public int InsertBook(string name, string author, int inStock)
+        {
+            int generatedId;
+
+            using (var conn = GetConnection())
+            {
+                using (SqlCommand cmd = new SqlCommand("", conn))
+                {
+                    cmd.CommandText = $"INSERT INTO Books (Name, Author, InStock) VALUES (@name, @author, @inStock); SELECT SCOPE_IDENTITY();";
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@name", name);
+                    cmd.Parameters.AddWithValue("@author", author);
+                    cmd.Parameters.AddWithValue("@inStock", inStock);
+
+                    generatedId = Convert.ToInt32(cmd.ExecuteScalar());
+                    conn.Close();
+                }
+            }
+
+            return generatedId;
+        }
+
+        public int InsertUser(string name, string isAdmin, string password)
+        {
+            int generatedId;
+
+            using (var conn = GetConnection())
+            {
+                using (SqlCommand cmd = new SqlCommand("", conn))
+                {
+                    cmd.CommandText = $"INSERT INTO Uzivatele (Name, IsAdmin, Password) VALUES (@name, @isAdmin, @password); SELECT SCOPE_IDENTITY();";
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@name", name);
+                    cmd.Parameters.AddWithValue("@isAdmin", isAdmin);
+                    cmd.Parameters.AddWithValue("@password", password);
+
+                    generatedId = Convert.ToInt32(cmd.ExecuteScalar());
+                    conn.Close();
+                }
+            }
+
+            return generatedId;
         }
 
 
