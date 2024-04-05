@@ -1,4 +1,6 @@
-﻿using System;
+﻿using KnihovnaDemo.Models;
+using KnihovnaDemo.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,85 @@ namespace KnihovnaDemo.Views
         public AdminView()
         {
             InitializeComponent();
+        }
+
+        private void ListView_SelectionChanged_Users(object sender, SelectionChangedEventArgs e)
+        {
+            var viewModel = (AdminViewViewModel)DataContext;
+            var item = e.AddedItems[0] as UserModel;
+
+            viewModel.SelectedUser = item;
+
+       
+
+        }
+
+        private void ListView_SelectionChanged_Books(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+            var viewModel = (AdminViewViewModel)DataContext;
+            var item = e.AddedItems[0] as BookModel;
+
+            viewModel.SelectedBook = item;
+            }
+            catch (Exception)
+            {
+
+               // throw;
+            }
+
+        }
+
+        private void ListView_SelectionChanged_lendsMain(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+            var viewModel = (AdminViewViewModel)DataContext;
+            var item = e.AddedItems[0] as LendModel;
+
+            viewModel.SelectedLendMain = item;
+            }
+            catch (Exception)
+            {
+
+                //throw;
+            }
+
+        }
+
+        private void ListView_SelectionChanged_BooksMain(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+            var viewModel = (AdminViewViewModel)DataContext;
+            var item = e.AddedItems[0] as BookModel;
+
+            viewModel.SelectedBookMain = item;
+            }
+            catch (Exception)
+            {
+
+                //throw;
+            }
+
+        }
+        private void ListView_SelectionChanged_UsersMain(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+            var viewModel = (AdminViewViewModel)DataContext;
+            var item = e.AddedItems[0] as UserModel;
+
+            viewModel.SelectedUserMain = item;
+            }
+            catch (Exception)
+            {
+
+                //throw;
+            }
+
+
         }
     }
 }

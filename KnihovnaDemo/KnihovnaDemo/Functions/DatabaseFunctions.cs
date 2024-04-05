@@ -101,6 +101,28 @@ namespace KnihovnaDemo.Functions
             return generatedId;
         }
 
+        public int InsertLend(int idUser, int idBook, DateTime lendedTime)
+        {
+            int generatedId;
+
+            using (var conn = GetConnection())
+            {
+                using (SqlCommand cmd = new SqlCommand("", conn))
+                {
+                    cmd.CommandText = $"INSERT INTO Lends (IdUser, IdBook, Landed) VALUES (@iduser, @idBook, @landed); SELECT SCOPE_IDENTITY();";
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@idUser", idUser);
+                    cmd.Parameters.AddWithValue("@IdBook", idBook);
+                    cmd.Parameters.AddWithValue("@landed", lendedTime);
+
+                    generatedId = Convert.ToInt32(cmd.ExecuteScalar());
+                    conn.Close();
+                }
+            }
+
+            return generatedId;
+        }
+
         public int InsertUser(string name, string isAdmin, string password)
         {
             int generatedId;
@@ -121,6 +143,55 @@ namespace KnihovnaDemo.Functions
             }
 
             return generatedId;
+        }
+        public void ReturnBook(int id, DateTime returned)
+        {
+            using (var conn = GetConnection())
+            {
+                using (SqlCommand cmd = new SqlCommand("", conn))
+                {
+                    cmd.CommandText = $"UPDATE Lends SET Returned = @returned WHERE Id = @id;";
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@returned", returned);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteScalar();
+                    conn.Close();
+                }
+            }
+        }
+
+        public void UpdateUser(int id, string name, bool isAdmin)
+        {
+            using (var conn = GetConnection())
+            {
+                using (SqlCommand cmd = new SqlCommand("", conn))
+                {
+                    cmd.CommandText = $"UPDATE Uzivatele SET Name = @name, IsAdmin = @isAdmin WHERE Id = @id;";
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@name", name);
+                    cmd.Parameters.AddWithValue("@isAdmin", isAdmin ? "1":"0");
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteScalar();
+                    conn.Close();
+                }
+            }
+        }
+        public void UpdateBook(int id, string name, string author, int inStock)
+        {
+            using (var conn = GetConnection())
+            {
+                using (SqlCommand cmd = new SqlCommand("", conn))
+                {
+                    cmd.CommandText = $"UPDATE Books SET Name = @name, Author = @author, InStock = @inStock WHERE Id = @id;";
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@name", name);
+                    cmd.Parameters.AddWithValue("@author", author);
+                    cmd.Parameters.AddWithValue("@inStock", inStock);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteScalar();
+                    conn.Close();
+                }
+            }
         }
 
 
