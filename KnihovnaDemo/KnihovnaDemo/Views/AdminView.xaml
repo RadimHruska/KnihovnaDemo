@@ -16,18 +16,17 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="972"/>
-            <ColumnDefinition Width="760.547"/>
+            <ColumnDefinition Width="972*"/>
         </Grid.ColumnDefinitions>
 
-        <TabControl x:Name="tab1" Grid.Column="1" Width="Auto" Grid.ColumnSpan="2">
+        <TabControl x:Name="tab1" Width="Auto" Grid.Column="0">
             <TabItem Header="Výpůjčky">
                 <Grid Margin="0,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="996*"/>
                         <ColumnDefinition Width="731*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView ItemsSource="{Binding LendModels}" SelectionChanged="ListView_SelectionChanged_lendsMain" SelectedIndex="0" Grid.ColumnSpan="2">
+                    <ListView ItemsSource="{Binding LendModels}" SelectionChanged="ListView_SelectionChanged_lendsMain" SelectedIndex="0" Grid.Column="0">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="Auto"/>
@@ -43,12 +42,11 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Uživatele">
-                <Grid Margin="0,0,0,0">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25*"/>
-                        <ColumnDefinition Width="1702*"/>
+                        <ColumnDefinition Width="144"/>
                     </Grid.ColumnDefinitions>
-                    <ListView ItemsSource="{Binding UserModels}" SelectionChanged="ListView_SelectionChanged_UsersMain" Grid.ColumnSpan="2" SelectedIndex="0">
+                    <ListView ItemsSource="{Binding UserModels}" SelectionChanged="ListView_SelectionChanged_UsersMain" Grid.ColumnSpan="3" SelectedIndex="0">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}" Width="Auto"/>
@@ -60,7 +58,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Knížky">
-                <Grid Margin="0,0,0,0">
+                <Grid>
                     <ListView ItemsSource="{Binding BookModels}" SelectionChanged="ListView_SelectionChanged_BooksMain" SelectedIndex="0">
                         <ListView.View>
                             <GridView>
@@ -77,7 +75,7 @@
         </TabControl>
 
 
-        <TabControl x:Name="tab2" Grid.Column="1" Width="Auto" Margin="738,5,514,5" Grid.ColumnSpan="2">
+        <TabControl x:Name="tab2" Grid.Column="1">
             <TabItem Header="Editace">
                 <TabControl Margin="0,0,15,0">
                     <TabItem Header="Vrátit">
@@ -106,9 +104,9 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            
+
                             <TextBox IsEnabled="False" Grid.Row="0" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedUserMain.ID, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
-                           <Label Content="Jméno" Grid.Row="1"/>
+                            <Label Content="Jméno" Grid.Row="1"/>
                             <TextBox  Grid.Row="2" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedUserMain.Name, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
                             <Label Content="Admin?" Grid.Row="3"/>
                             <TextBox  Grid.Row="4" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedUserMain.IsAdmin, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>

@@ -69,6 +69,10 @@ namespace KnihovnaDemo.ViewModels
         public LoginViewModel()
         {
             LoginCommad = new ViewModelCommand(LogIn, CanLogIn);
+#if DEBUG
+            Username = "Radim";
+            Password = "heslo";
+#endif
         }
         private bool CanLogIn(object obj)
         {
