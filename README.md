@@ -1,0 +1,1 @@
+Projekt na uspokojení požadavků záverečného projektu do školy. Chybí tam sposta věcí, jako je například možnost posílání alertů uživately a hashování uživatelských hesel. Postupně ho snas stihnu vylepšit.
