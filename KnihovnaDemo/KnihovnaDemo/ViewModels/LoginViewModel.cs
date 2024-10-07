@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using KnihovnaDemo.Functions;
 using KnihovnaDemo.Models;
@@ -93,7 +94,8 @@ namespace KnihovnaDemo.ViewModels
             }
             else
             {
-                    ErrorMessage = "Něco se nepovedlo";
+                ErrorMessage = "Něco se nepovedlo";
+                MessageBox.Show("něco se nepovedlo");
             }
                
 

@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 
@@ -210,11 +211,19 @@ namespace KnihovnaDemo.ViewModels
 
         public void ReturnBook(object obj)
         {
-            DatabaseFunctions.ReturnBook(SelectedLendMain.Id, Returned);
-            LendModels.Remove(SelectedLendMain);
-            SelectedLendMain.ReturnedDate = Returned;
-            LendModels.Add(SelectedLendMain);
-            LendModels = new ObservableCollection<LendModel>( LendModels.OrderBy(l => l.Id));
+            var result = MessageBox.Show("Opravdu chcete vrátit knihu?", "Vrátit?", MessageBoxButton.YesNoCancel);
+            if (result == MessageBoxResult.Yes)
+            {
+                DatabaseFunctions.ReturnBook(SelectedLendMain.Id, Returned);
+                LendModels.Remove(SelectedLendMain);
+                SelectedLendMain.ReturnedDate = Returned;
+                LendModels.Add(SelectedLendMain);
+                LendModels = new ObservableCollection<LendModel>(LendModels.OrderBy(l => l.Id));
+            }
+            else
+            {
+                MessageBox.Show("nevráceno");
+            }
             
         }
         public void UpdateUser(object obj)
