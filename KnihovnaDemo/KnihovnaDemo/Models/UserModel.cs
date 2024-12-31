@@ -16,5 +16,6 @@ namespace KnihovnaDemo.Models
         public int ID { get; set; }
         public string Name { get; set; }
         public bool IsAdmin { get; set; }
+        public ICollection<LendModel> Lends { get; set; }
     }
 }

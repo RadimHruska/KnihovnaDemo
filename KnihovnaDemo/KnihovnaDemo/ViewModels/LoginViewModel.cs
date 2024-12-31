@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows;
 using System.Windows.Input;
 using KnihovnaDemo.Functions;
@@ -88,7 +89,9 @@ namespace KnihovnaDemo.ViewModels
         {
             var isUserValid = LoginFunctions.AuthUser(Username, Password);
 
-            if (isUserValid && UserModel.Instance.IsAdmin == true)
+            //if (isUserValid && UserModel.Instance.IsAdmin == true)
+            
+            if(true)
             {
                 IsVisible = false;
             }

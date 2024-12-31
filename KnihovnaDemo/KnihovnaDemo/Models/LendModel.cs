@@ -11,8 +11,8 @@ namespace KnihovnaDemo.Models
         public int Id { get; set; }
         public int IdUser { get; set; }
         public int IdBook { get; set; }
-        public string NameOfBook { get; set; }
-        public string NameOfUser { get; set;}
+        public string ?NameOfBook { get; set; }
+        public string ?NameOfUser { get; set;}
         public DateTime LandedDate { get; set; }
         public DateTime? ReturnedDate { get; set;}
 

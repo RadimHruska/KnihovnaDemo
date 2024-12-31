@@ -29,7 +29,7 @@ namespace KnihovnaDemo.Views
         private void ListView_SelectionChanged_Users(object sender, SelectionChangedEventArgs e)
         {
             var viewModel = (AdminViewViewModel)DataContext;
-            var item = e.AddedItems[0] as UserModel;
+            var item = e.AddedItems[0] as User;
 
             viewModel.SelectedUser = item;
 
@@ -42,7 +42,7 @@ namespace KnihovnaDemo.Views
             try
             {
             var viewModel = (AdminViewViewModel)DataContext;
-            var item = e.AddedItems[0] as BookModel;
+            var item = e.AddedItems[0] as Book;
 
             viewModel.SelectedBook = item;
             }
@@ -59,7 +59,7 @@ namespace KnihovnaDemo.Views
             try
             {
             var viewModel = (AdminViewViewModel)DataContext;
-            var item = e.AddedItems[0] as LendModel;
+            var item = e.AddedItems[0] as Lend;
 
             viewModel.SelectedLendMain = item;
             }
@@ -76,7 +76,7 @@ namespace KnihovnaDemo.Views
             try
             {
             var viewModel = (AdminViewViewModel)DataContext;
-            var item = e.AddedItems[0] as BookModel;
+            var item = e.AddedItems[0] as Book;
 
             viewModel.SelectedBookMain = item;
             }
@@ -92,7 +92,7 @@ namespace KnihovnaDemo.Views
             try
             {
             var viewModel = (AdminViewViewModel)DataContext;
-            var item = e.AddedItems[0] as UserModel;
+            var item = e.AddedItems[0] as User;
 
             viewModel.SelectedUserMain = item;
             }

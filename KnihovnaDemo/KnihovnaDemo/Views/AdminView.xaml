@@ -88,8 +88,8 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <TextBox IsEnabled="False" Grid.Row="0" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedLendMain.Id, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
-                            <TextBox IsEnabled="False" Grid.Row="1" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedLendMain.NameOfBook, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
-                            <TextBox IsEnabled="False" Grid.Row="2" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedLendMain.NameOfUser, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
+                            <TextBox IsEnabled="False" Grid.Row="1" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedLendMain.Book.Name, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
+                            <TextBox IsEnabled="False" Grid.Row="2" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedLendMain.User.Name, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
                             <DatePicker HorizontalAlignment="Center" Grid.Row="3" SelectedDate="{Binding Path=Returned, Mode=TwoWay, TargetNullValue={x:Static System:DateTime.Now}}" VerticalAlignment="Center"/>
                             <Button Content="Vrátit" Grid.Row="4" Command="{Binding ReturnBookCommand}"/>
                         </Grid>
@@ -105,7 +105,7 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBox IsEnabled="False" Grid.Row="0" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedUserMain.ID, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
+                            <TextBox IsEnabled="False" Grid.Row="0" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedUserMain.Id, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
                             <Label Content="Jméno" Grid.Row="1"/>
                             <TextBox  Grid.Row="2" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedUserMain.Name, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
                             <Label Content="Admin?" Grid.Row="3"/>

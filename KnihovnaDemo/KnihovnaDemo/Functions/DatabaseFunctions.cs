@@ -1,229 +1,146 @@
 ﻿using KnihovnaDemo.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.RightsManagement;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KnihovnaDemo.Functions
 {
-    class DatabaseFunctions : Base
+    public class DatabaseFunctions
     {
-        public ObservableCollection<LendModel> SelectLends()
+        public ObservableCollection<Lend> SelectLends()
         {
-            ObservableCollection<LendModel> lends = new ObservableCollection<LendModel>();
-            using (var conn = GetConnection())
+            using (var context = new LibraryContext())
             {
-                using (SqlCommand cmd = new SqlCommand("", conn))
-                {
-                    cmd.CommandText = $"SELECT L.Id as Id, L.Landed as Landed, " +
-                        $" L.Returned as Returned, U.Name AS UserName, U.ID AS UserID, " +
-                        $" B.Name AS BookName, B.ID AS BookID " +
-                        $"FROM Lends L JOIN Uzivatele U ON L.IdUser = U.ID JOIN Books B ON L.IdBook = B.ID;";
-                    conn.Open();
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                var lends = context.Lends
+                    .Include(l => l.User)
+                    .Include(l => l.Book)
+                    .Select(l => new Lend
                     {
-                        while (reader.Read())
-                        {
-                            var lend = new LendModel() {
-                                Id = int.Parse(reader["Id"].ToString()),
-                                IdUser = int.Parse(reader["UserID"].ToString()),
-                                IdBook = int.Parse(reader["BookID"].ToString()),
-                                NameOfBook = reader["BookName"].ToString(),
-                                NameOfUser = reader["UserName"].ToString(),
-                                LandedDate = reader.GetDateTime("Landed"),
-                                ReturnedDate = !reader.IsDBNull("Returned") ? reader.GetDateTime("Returned") : null,
-                            };
-                            lends.Add(lend);
-                           
-                        }
-                    }
-                    conn.Close();
-                }
+                        Id = l.Id,
+                        IdUser = l.User.Id,
+                        IdBook = l.Book.Id,
+                        LandedDate = l.LandedDate,
+                        ReturnedDate = l.ReturnedDate
+                    })
+                    .ToList();
+
+                return new ObservableCollection<Lend>(lends);
             }
-            return lends;
         }
 
-        public ObservableCollection<UserModel> SelectUsers()
+        public ObservableCollection<User> SelectUsers()
         {
-            ObservableCollection<UserModel> users = new ObservableCollection<UserModel>();
-            using (var conn = GetConnection())
+            using (var context = new LibraryContext())
             {
-                using (SqlCommand cmd = new SqlCommand("", conn))
-                {
-                    cmd.CommandText = $"SELECT * FROM Uzivatele";
-                    conn.Open();
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var user = new UserModel()
-                            {
-                            ID = int.Parse(reader[0].ToString()),
-                            Name = reader[1].ToString().Trim(),
-                            IsAdmin = (reader["IsAdmin"].ToString().ToLower().Trim() == "1") ? true : false,
-
-                        };
-                            users.Add(user);
-
-                        }
-                    }
-                    conn.Close();
-                }
+                var users = context.Users.ToList();
+                return new ObservableCollection<User>(users);
             }
-            return users;  
         }
 
         public int InsertBook(string name, string author, int inStock)
         {
-            int generatedId;
-
-            using (var conn = GetConnection())
+            using (var context = new LibraryContext())
             {
-                using (SqlCommand cmd = new SqlCommand("", conn))
+                var book = new Book
                 {
-                    cmd.CommandText = $"INSERT INTO Books (Name, Author, InStock) VALUES (@name, @author, @inStock); SELECT SCOPE_IDENTITY();";
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@name", name);
-                    cmd.Parameters.AddWithValue("@author", author);
-                    cmd.Parameters.AddWithValue("@inStock", inStock);
+                    Name = name,
+                    Author = author,
+                    InStock = inStock
+                };
 
-                    generatedId = Convert.ToInt32(cmd.ExecuteScalar());
-                    conn.Close();
-                }
+                context.Books.Add(book);
+                context.SaveChanges();
+
+                return book.Id;
             }
-
-            return generatedId;
         }
 
         public int InsertLend(int idUser, int idBook, DateTime lendedTime)
         {
-            int generatedId;
-
-            using (var conn = GetConnection())
+            using (var context = new LibraryContext())
             {
-                using (SqlCommand cmd = new SqlCommand("", conn))
+                var lend = new Lend
                 {
-                    cmd.CommandText = $"INSERT INTO Lends (IdUser, IdBook, Landed) VALUES (@iduser, @idBook, @landed); SELECT SCOPE_IDENTITY();";
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@idUser", idUser);
-                    cmd.Parameters.AddWithValue("@IdBook", idBook);
-                    cmd.Parameters.AddWithValue("@landed", lendedTime);
+                    IdUser = idUser,
+                    IdBook = idBook,
+                    LandedDate = lendedTime
+                };
 
-                    generatedId = Convert.ToInt32(cmd.ExecuteScalar());
-                    conn.Close();
-                }
+                context.Lends.Add(lend);
+                context.SaveChanges();
+
+                return lend.Id;
             }
-
-            return generatedId;
         }
 
-        public int InsertUser(string name, string isAdmin, string password)
+        public int InsertUser(string name, bool isAdmin)
         {
-            int generatedId;
-
-            using (var conn = GetConnection())
+            using (var context = new LibraryContext())
             {
-                using (SqlCommand cmd = new SqlCommand("", conn))
+                var user = new User
                 {
-                    cmd.CommandText = $"INSERT INTO Uzivatele (Name, IsAdmin, Password) VALUES (@name, @isAdmin, @password); SELECT SCOPE_IDENTITY();";
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@name", name);
-                    cmd.Parameters.AddWithValue("@isAdmin", isAdmin);
-                    cmd.Parameters.AddWithValue("@password", password);
+                    Name = name,
+                    IsAdmin = isAdmin
+                };
 
-                    generatedId = Convert.ToInt32(cmd.ExecuteScalar());
-                    conn.Close();
-                }
+                context.Users.Add(user);
+                context.SaveChanges();
+
+                return user.Id;
             }
-
-            return generatedId;
         }
+
         public void ReturnBook(int id, DateTime returned)
         {
-            using (var conn = GetConnection())
+            using (var context = new LibraryContext())
             {
-                using (SqlCommand cmd = new SqlCommand("", conn))
+                var lend = context.Lends.Find(id);
+                if (lend != null)
                 {
-                    cmd.CommandText = $"UPDATE Lends SET Returned = @returned WHERE Id = @id;";
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@returned", returned);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.ExecuteScalar();
-                    conn.Close();
+                    lend.ReturnedDate = returned;
+                    context.SaveChanges();
                 }
             }
         }
 
         public void UpdateUser(int id, string name, bool isAdmin)
         {
-            using (var conn = GetConnection())
+            using (var context = new LibraryContext())
             {
-                using (SqlCommand cmd = new SqlCommand("", conn))
+                var user = context.Users.Find(id);
+                if (user != null)
                 {
-                    cmd.CommandText = $"UPDATE Uzivatele SET Name = @name, IsAdmin = @isAdmin WHERE Id = @id;";
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@name", name);
-                    cmd.Parameters.AddWithValue("@isAdmin", isAdmin ? "1":"0");
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.ExecuteScalar();
-                    conn.Close();
+                    user.Name = name;
+                    user.IsAdmin = isAdmin;
+                    context.SaveChanges();
                 }
             }
         }
+
         public void UpdateBook(int id, string name, string author, int inStock)
         {
-            using (var conn = GetConnection())
+            using (var context = new LibraryContext())
             {
-                using (SqlCommand cmd = new SqlCommand("", conn))
+                var book = context.Books.Find(id);
+                if (book != null)
                 {
-                    cmd.CommandText = $"UPDATE Books SET Name = @name, Author = @author, InStock = @inStock WHERE Id = @id;";
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@name", name);
-                    cmd.Parameters.AddWithValue("@author", author);
-                    cmd.Parameters.AddWithValue("@inStock", inStock);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.ExecuteScalar();
-                    conn.Close();
+                    book.Name = name;
+                    book.Author = author;
+                    book.InStock = inStock;
+                    context.SaveChanges();
                 }
             }
         }
 
-
-        public ObservableCollection<BookModel> SelectBook()
+        public ObservableCollection<Book> SelectBooks()
         {
-            ObservableCollection<BookModel> books = new ObservableCollection<BookModel>();
-            using (var conn = GetConnection())
+            using (var context = new LibraryContext())
             {
-                using (SqlCommand cmd = new SqlCommand("", conn))
-                {
-                    cmd.CommandText = $"SELECT * FROM Books";
-                    conn.Open();
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var book = new BookModel()
-                            {
-                                Id = int.Parse(reader[0].ToString()),
-                                Name = reader[1].ToString().Trim(),
-                                Author = reader[2].ToString().Trim(),
-                                InStock = int.Parse(reader[3].ToString()),
-
-                            };
-                            books.Add(book);
-
-                        }
-                    }
-                    conn.Close();
-                }
+                var books = context.Books.ToList();
+                return new ObservableCollection<Book>(books);
             }
-            return books;
         }
     }
 }
