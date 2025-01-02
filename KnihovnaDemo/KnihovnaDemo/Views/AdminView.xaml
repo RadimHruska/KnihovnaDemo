@@ -155,7 +155,7 @@
                     <TextBox TextWrapping="Wrap" Text="{Binding Author, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Height="20" Margin="148,0,152,0"/>
                     <Label Content="Poček kusů" Grid.Row="4"/>
                     <TextBox TextWrapping="Wrap"  Grid.Row="5" Text="{Binding InStock, UpdateSourceTrigger=PropertyChanged}" Height="20" Margin="148,0,152,0"/>
-                    <Button Content="Vložit" Grid.Row="6" Command="{Binding InsertBookCommnand}"/>
+                    <Button Content="Vložit" Grid.Row="6" Command="{Binding InsertBookCommand}"/>
 
                 </Grid>
             </TabItem>
