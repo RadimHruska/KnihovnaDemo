@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: knihovna-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=KnihovnaStr0ngP@ssw0rd
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    restart: unless-stopped
+    networks:
+      - knihovna-network
+  
+  migrations:
+    build:
+      context: ./KnihovnaAPI
+      dockerfile: Dockerfile.migrations
+      args:
+        - CONNECTION_STRING=Server=sqlserver;Database=KnihovnaDb;User=sa;Password=KnihovnaStr0ngP@ssw0rd;TrustServerCertificate=True;
+    container_name: knihovna-migrations
+    depends_on:
+      - sqlserver
+    networks:
+      - knihovna-network
+
+  knihovna-api:
+    build:
+      context: ./KnihovnaAPI
+      dockerfile: Dockerfile
+    container_name: knihovna-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=KnihovnaDb;User=sa;Password=KnihovnaStr0ngP@ssw0rd;TrustServerCertificate=True;
+    ports:
+      - "5001:8080"
+    depends_on:
+      - migrations
+    restart: unless-stopped
+    networks:
+      - knihovna-network
+
+networks:
+  knihovna-network:
+    driver: bridge
+
+volumes:
+  sqlserver-data: 

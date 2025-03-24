@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Kopírování projektu a restore
+COPY ["KnihovnaAPI.csproj", "./"]
+RUN dotnet restore "KnihovnaAPI.csproj"
+COPY . .
+
+# Instalace Entity Framework Core tools s nejnovější verzí pro .NET 8
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="${PATH}:/root/.dotnet/tools"
+
+# Nastavení proměnné prostředí pro připojení k databázi
+ARG CONNECTION_STRING
+ENV ConnectionStrings__DefaultConnection=$CONNECTION_STRING
+
+# Spuštění migrace
+ENTRYPOINT ["dotnet", "ef", "database", "update", "--verbose"] 
