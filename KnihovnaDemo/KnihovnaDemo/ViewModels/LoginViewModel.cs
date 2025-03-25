@@ -18,92 +18,106 @@ namespace KnihovnaDemo.ViewModels
         private string _password;
         private string _errorMessage;
         private bool _isVisible = true;
-        public LoginFunctions LoginFunctions = new LoginFunctions();
-
+        
+        // Nahrazení LoginFunctions instancí ApiClient
+        private readonly ApiClient _apiClient;
 
         public bool IsVisible
         {
-            get
-            {
-                return _isVisible;
-            }
+            get => _isVisible;
             set
             {
                 _isVisible = value;
                 OnPropertyChanged(nameof(IsVisible));
             }
         }
+        
         public string ErrorMessage
         {
-            get
-            {
-                return _errorMessage;
-            }
+            get => _errorMessage;
             set
             {
                 _errorMessage = value;
                 OnPropertyChanged(nameof(ErrorMessage));
             }
         }
+        
         public string Username
         {
-            get
-            {
-                return _username;
-            }
+            get => _username;
             set
             {
                 _username = value;
                 OnPropertyChanged(nameof(Username));
             }
         }
+        
         public string Password
         {
-            get {
-                return _password;
-            }
-            set {
+            get => _password;
+            set
+            {
                 _password = value;
                 OnPropertyChanged(nameof(Password));
             }
         }
-        public ICommand LoginCommad { get; }
+        
+        public ICommand LoginCommand { get; }
+        
         public LoginViewModel()
         {
-            LoginCommad = new ViewModelCommand(LogIn, CanLogIn);
+            // Inicializace API klienta s URL backendu z konfigurace
+            _apiClient = new ApiClient(Config.ApiBaseUrl);
+            
+            LoginCommand = new ViewModelCommand(LogInAsync, CanLogIn);
+            
 #if DEBUG
             Username = "Radim";
             Password = "heslo";
 #endif
         }
+        
         private bool CanLogIn(object obj)
         {
-            if (string.IsNullOrWhiteSpace(Username) || Password == null)
-            {
-                return false;
-            }
-            else
-                return true;
+            return !string.IsNullOrWhiteSpace(Username) && Password != null;
         }
-        private void LogIn(object obj)
+        
+        private async void LogInAsync(object obj)
         {
-            var isUserValid = LoginFunctions.AuthUser(Username, Password);
-
-            //if (isUserValid && UserModel.Instance.IsAdmin == true)
-            
-            if(true)
+            try
             {
-                IsVisible = false;
+                var user = await _apiClient.LoginAsync(Username, Password);
+                
+                if (user != null)
+                {
+                    // Uložení informací o přihlášeném uživateli (např. do singletonu nebo static property)
+                    UserModel.CurrentUser = user;
+                    
+                    // Pokud je uživatel admin, přepni na admin view
+                    if (user.IsAdmin)
+                    {
+                        IsVisible = false;
+                    }
+                    else
+                    {
+                        ErrorMessage = "Nemáte oprávnění pro vstup do administrace";
+                        MessageBox.Show("Nemáte oprávnění pro vstup do administrace", "Chyba přihlášení", 
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                else
+                {
+                    ErrorMessage = "Nesprávné uživatelské jméno nebo heslo";
+                    MessageBox.Show("Nesprávné uživatelské jméno nebo heslo", "Chyba přihlášení", 
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ErrorMessage = "Něco se nepovedlo";
-                MessageBox.Show("něco se nepovedlo");
+                ErrorMessage = "Chyba při přihlašování";
+                MessageBox.Show($"Chyba při přihlašování: {ex.Message}", "Chyba", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
-               
-
-
-
         }
     }
 }

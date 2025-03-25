@@ -17,5 +17,10 @@ namespace KnihovnaDemo.Models
         public string Name { get; set; }
         public bool IsAdmin { get; set; }
         public ICollection<LendModel> Lends { get; set; }
+        public string NameOfUser { get; set; }
+        public string Password { get; set; }
+
+        // Statická vlastnost pro přihlášeného uživatele
+        public static User CurrentUser { get; set; }
     }
 }

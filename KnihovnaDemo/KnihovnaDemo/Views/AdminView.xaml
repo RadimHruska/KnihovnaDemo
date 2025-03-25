@@ -7,219 +7,460 @@
         xmlns:viewModel="clr-namespace:KnihovnaDemo.ViewModels"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="AdminView" Height="450" Width="1200" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
+        Title="Knihovna - Administrace" Height="650" Width="1200" 
+        ResizeMode="CanResizeWithGrip" 
+        WindowStartupLocation="CenterScreen">
 
     <Window.DataContext>
         <viewModel:AdminViewViewModel/>
     </Window.DataContext>
 
-    <Grid>
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="972*"/>
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TabControl x:Name="tab1" Width="Auto" Grid.Column="0">
-            <TabItem Header="Výpůjčky">
-                <Grid Margin="0,0,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="996*"/>
-                        <ColumnDefinition Width="731*"/>
-                    </Grid.ColumnDefinitions>
-                    <ListView ItemsSource="{Binding LendModels}" SelectionChanged="ListView_SelectionChanged_lendsMain" SelectedIndex="0" Grid.Column="0">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="Auto"/>
-                                <GridViewColumn Header="Id Uživatele" DisplayMemberBinding="{Binding IdUser}" Width="Auto"/>
-                                <GridViewColumn Header="Id Knihy" DisplayMemberBinding="{Binding IdBook}" Width="Auto"/>
-                                <GridViewColumn Header="Název Knihy" DisplayMemberBinding="{Binding NameOfBook}" Width="Auto"/>
-                                <GridViewColumn Header="Jméno uživatele" DisplayMemberBinding="{Binding NameOfUser}" Width="Auto"/>
-                                <GridViewColumn Header="Datum vypůjčení" DisplayMemberBinding="{Binding LandedDate}" Width="Auto"/>
-                                <GridViewColumn Header="Datum Vrácení" DisplayMemberBinding="{Binding ReturnedDate}" Width="Auto"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Uživatele">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="144"/>
-                    </Grid.ColumnDefinitions>
-                    <ListView ItemsSource="{Binding UserModels}" SelectionChanged="ListView_SelectionChanged_UsersMain" Grid.ColumnSpan="3" SelectedIndex="0">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}" Width="Auto"/>
-                                <GridViewColumn Header="Jméno" DisplayMemberBinding="{Binding Name}" Width="Auto"/>
-                                <GridViewColumn Header="Je admin?" DisplayMemberBinding="{Binding IsAdmin}" Width="Auto"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Knížky">
-                <Grid>
-                    <ListView ItemsSource="{Binding BookModels}" SelectionChanged="ListView_SelectionChanged_BooksMain" SelectedIndex="0">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="Auto"/>
-                                <GridViewColumn Header="Jméno" DisplayMemberBinding="{Binding Name}" Width="Auto"/>
-                                <GridViewColumn Header="Autor" DisplayMemberBinding="{Binding Author}" Width="Auto"/>
-                                <GridViewColumn Header="Počet knih v knihovně" DisplayMemberBinding="{Binding InStock}" Width="Auto"/>
+        <!-- Levý panel s daty -->
+        <Border Grid.Column="0" 
+                BorderBrush="{StaticResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="5" 
+                Margin="0,0,10,0">
+            <TabControl Background="Transparent" 
+                        BorderThickness="0" 
+                        Margin="5">
+                <TabItem Header="Výpůjčky">
+                    <Grid Margin="0">
+                        <ListView ItemsSource="{Binding LendModels}" 
+                                  SelectionChanged="ListView_SelectionChanged_lendsMain" 
+                                  SelectedIndex="0" 
+                                  Margin="0,5">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="40"/>
+                                    <GridViewColumn Header="Kniha" DisplayMemberBinding="{Binding NameOfBook}" Width="120"/>
+                                    <GridViewColumn Header="Uživatel" DisplayMemberBinding="{Binding NameOfUser}" Width="120"/>
+                                    <GridViewColumn Header="Vypůjčeno" DisplayMemberBinding="{Binding LandedDate}" Width="Auto"/>
+                                    <GridViewColumn Header="Vráceno" DisplayMemberBinding="{Binding ReturnedDate}" Width="Auto"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Uživatelé">
+                    <Grid>
+                        <ListView ItemsSource="{Binding UserModels}" 
+                                  SelectionChanged="ListView_SelectionChanged_UsersMain" 
+                                  SelectedIndex="0" 
+                                  Margin="0,5">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}" Width="40"/>
+                                    <GridViewColumn Header="Jméno" DisplayMemberBinding="{Binding Name}" Width="180"/>
+                                    <GridViewColumn Header="Admin" DisplayMemberBinding="{Binding IsAdmin}" Width="80"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Knihy">
+                    <Grid>
+                        <ListView ItemsSource="{Binding BookModels}" 
+                                  SelectionChanged="ListView_SelectionChanged_BooksMain" 
+                                  SelectedIndex="0" 
+                                  Margin="0,5">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="40"/>
+                                    <GridViewColumn Header="Název" DisplayMemberBinding="{Binding Name}" Width="120"/>
+                                    <GridViewColumn Header="Autor" DisplayMemberBinding="{Binding Author}" Width="120"/>
+                                    <GridViewColumn Header="Počet" DisplayMemberBinding="{Binding InStock}" Width="60"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Border>
 
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Grid>
-            </TabItem>
-        </TabControl>
+        <!-- Pravý panel s editací a vkládáním dat -->
+        <Border Grid.Column="1" 
+                BorderBrush="{StaticResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="5">
+            <TabControl Background="Transparent" 
+                        BorderThickness="0" 
+                        Margin="5">
+                <TabItem Header="Správa dat">
+                    <TabControl Margin="0" Background="Transparent" BorderThickness="0">
+                        <TabItem Header="Vrácení knihy">
+                            <Border BorderBrush="{StaticResource BorderBrush}" 
+                                    BorderThickness="1" 
+                                    CornerRadius="5" 
+                                    Margin="10">
+                                <Grid Margin="15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
+                                    <TextBlock Text="Detail výpůjčky" 
+                                             Grid.Row="0" 
+                                             Grid.ColumnSpan="2" 
+                                             FontSize="18" 
+                                             FontWeight="Bold" 
+                                             Margin="0,0,0,15"/>
 
-        <TabControl x:Name="tab2" Grid.Column="1">
-            <TabItem Header="Editace">
-                <TabControl Margin="0,0,15,0">
-                    <TabItem Header="Vrátit">
-                        <Grid Background="#FFE5E5E5">
+                                    <Label Content="ID výpůjčky:" Grid.Row="1" Grid.Column="0" Margin="0,8,0,8"/>
+                                    <TextBox IsEnabled="False" 
+                                           Grid.Row="1" 
+                                           Grid.Column="1" 
+                                           Text="{Binding SelectedLendMain.Id, UpdateSourceTrigger=PropertyChanged}" 
+                                           Margin="0,5"/>
+
+                                    <Label Content="Kniha:" Grid.Row="2" Grid.Column="0" Margin="0,8,0,8"/>
+                                    <TextBox IsEnabled="False" 
+                                           Grid.Row="2" 
+                                           Grid.Column="1" 
+                                           Text="{Binding SelectedLendMain.Book.Name, UpdateSourceTrigger=PropertyChanged}" 
+                                           Margin="0,5"/>
+
+                                    <Label Content="Uživatel:" Grid.Row="3" Grid.Column="0" Margin="0,8,0,8"/>
+                                    <TextBox IsEnabled="False" 
+                                           Grid.Row="3" 
+                                           Grid.Column="1" 
+                                           Text="{Binding SelectedLendMain.User.Name, UpdateSourceTrigger=PropertyChanged}" 
+                                           Margin="0,5"/>
+
+                                    <Label Content="Datum vrácení:" Grid.Row="4" Grid.Column="0" Margin="0,8,0,8"/>
+                                    <DatePicker Grid.Row="4" 
+                                              Grid.Column="1" 
+                                              SelectedDate="{Binding Path=Returned, Mode=TwoWay, TargetNullValue={x:Static System:DateTime.Now}}" 
+                                              Margin="0,5"/>
+
+                                    <Button Content="Vrátit knihu" 
+                                          Grid.Row="5" 
+                                          Grid.Column="1" 
+                                          Command="{Binding ReturnBookCommand}" 
+                                          HorizontalAlignment="Right" 
+                                          Margin="0,15,0,0" 
+                                          Width="120" 
+                                          Height="35"/>
+                                </Grid>
+                            </Border>
+                        </TabItem>
+                        <TabItem Header="Úprava uživatele">
+                            <Border BorderBrush="{StaticResource BorderBrush}" 
+                                    BorderThickness="1" 
+                                    CornerRadius="5" 
+                                    Margin="10">
+                                <Grid Margin="15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="Úprava uživatele" 
+                                             Grid.Row="0" 
+                                             Grid.ColumnSpan="2" 
+                                             FontSize="18" 
+                                             FontWeight="Bold" 
+                                             Margin="0,0,0,15"/>
+
+                                    <Label Content="ID uživatele:" Grid.Row="1" Grid.Column="0" Margin="0,8,0,8"/>
+                                    <TextBox IsEnabled="False" 
+                                           Grid.Row="1" 
+                                           Grid.Column="1" 
+                                           Text="{Binding SelectedUserMain.Id, UpdateSourceTrigger=PropertyChanged}" 
+                                           Margin="0,5"/>
+
+                                    <Label Content="Jméno:" Grid.Row="2" Grid.Column="0" Margin="0,8,0,8"/>
+                                    <TextBox Grid.Row="2" 
+                                           Grid.Column="1" 
+                                           Text="{Binding SelectedUserMain.Name, UpdateSourceTrigger=PropertyChanged}" 
+                                           Margin="0,5"/>
+
+                                    <Label Content="Admin:" Grid.Row="3" Grid.Column="0" Margin="0,8,0,8"/>
+                                    <TextBox Grid.Row="3" 
+                                           Grid.Column="1" 
+                                           Text="{Binding SelectedUserMain.IsAdmin, UpdateSourceTrigger=PropertyChanged}" 
+                                           Margin="0,5"/>
+
+                                    <Button Content="Uložit změny" 
+                                          Grid.Row="4" 
+                                          Grid.Column="1" 
+                                          Command="{Binding EditUserCommand}" 
+                                          HorizontalAlignment="Right" 
+                                          Margin="0,15,0,0" 
+                                          Width="120" 
+                                          Height="35"/>
+                                </Grid>
+                            </Border>
+                        </TabItem>
+                        <TabItem Header="Úprava knihy">
+                            <Border BorderBrush="{StaticResource BorderBrush}" 
+                                    BorderThickness="1" 
+                                    CornerRadius="5" 
+                                    Margin="10">
+                                <Grid Margin="15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="Úprava knihy" 
+                                             Grid.Row="0" 
+                                             Grid.ColumnSpan="2" 
+                                             FontSize="18" 
+                                             FontWeight="Bold" 
+                                             Margin="0,0,0,15"/>
+
+                                    <Label Content="ID knihy:" Grid.Row="1" Grid.Column="0" Margin="0,8,0,8"/>
+                                    <TextBox IsEnabled="False" 
+                                           Grid.Row="1" 
+                                           Grid.Column="1" 
+                                           Text="{Binding SelectedBookMain.Id, UpdateSourceTrigger=PropertyChanged}" 
+                                           Margin="0,5"/>
+
+                                    <Label Content="Název:" Grid.Row="2" Grid.Column="0" Margin="0,8,0,8"/>
+                                    <TextBox Grid.Row="2" 
+                                           Grid.Column="1" 
+                                           Text="{Binding SelectedBookMain.Name, UpdateSourceTrigger=PropertyChanged}" 
+                                           Margin="0,5"/>
+
+                                    <Label Content="Autor:" Grid.Row="3" Grid.Column="0" Margin="0,8,0,8"/>
+                                    <TextBox Grid.Row="3" 
+                                           Grid.Column="1" 
+                                           Text="{Binding SelectedBookMain.Author, UpdateSourceTrigger=PropertyChanged}" 
+                                           Margin="0,5"/>
+
+                                    <Label Content="Počet kusů:" Grid.Row="4" Grid.Column="0" Margin="0,8,0,8"/>
+                                    <TextBox Grid.Row="4" 
+                                           Grid.Column="1" 
+                                           Text="{Binding SelectedBookMain.InStock, UpdateSourceTrigger=PropertyChanged}" 
+                                           Margin="0,5"/>
+
+                                    <Button Content="Uložit změny" 
+                                          Grid.Row="5" 
+                                          Grid.Column="1" 
+                                          Command="{Binding EditBookCommand}" 
+                                          HorizontalAlignment="Right" 
+                                          Margin="0,15,0,0" 
+                                          Width="120" 
+                                          Height="35"/>
+                                </Grid>
+                            </Border>
+                        </TabItem>
+                    </TabControl>
+                </TabItem>
+                <TabItem Header="Nová kniha">
+                    <Border BorderBrush="{StaticResource BorderBrush}" 
+                            BorderThickness="1" 
+                            CornerRadius="5" 
+                            Margin="10">
+                        <Grid Margin="15">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <TextBox IsEnabled="False" Grid.Row="0" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedLendMain.Id, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
-                            <TextBox IsEnabled="False" Grid.Row="1" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedLendMain.Book.Name, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
-                            <TextBox IsEnabled="False" Grid.Row="2" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedLendMain.User.Name, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
-                            <DatePicker HorizontalAlignment="Center" Grid.Row="3" SelectedDate="{Binding Path=Returned, Mode=TwoWay, TargetNullValue={x:Static System:DateTime.Now}}" VerticalAlignment="Center"/>
-                            <Button Content="Vrátit" Grid.Row="4" Command="{Binding ReturnBookCommand}"/>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Přidání nové knihy" 
+                                     Grid.Row="0" 
+                                     Grid.ColumnSpan="2" 
+                                     FontSize="18" 
+                                     FontWeight="Bold" 
+                                     Margin="0,0,0,15"/>
+
+                            <Label Content="Název:" Grid.Row="1" Grid.Column="0" Margin="0,8,0,8"/>
+                            <TextBox Grid.Row="1" 
+                                   Grid.Column="1" 
+                                   Text="{Binding NameOfBook, UpdateSourceTrigger=PropertyChanged}" 
+                                   Margin="0,5"/>
+
+                            <Label Content="Autor:" Grid.Row="2" Grid.Column="0" Margin="0,8,0,8"/>
+                            <TextBox Grid.Row="2" 
+                                   Grid.Column="1" 
+                                   Text="{Binding Author, UpdateSourceTrigger=PropertyChanged}" 
+                                   Margin="0,5"/>
+
+                            <Label Content="Počet kusů:" Grid.Row="3" Grid.Column="0" Margin="0,8,0,8"/>
+                            <TextBox Grid.Row="3" 
+                                   Grid.Column="1" 
+                                   Text="{Binding InStock, UpdateSourceTrigger=PropertyChanged}" 
+                                   Margin="0,5"/>
+
+                            <Button Content="Přidat knihu" 
+                                  Grid.Row="4" 
+                                  Grid.Column="1" 
+                                  Command="{Binding InsertBookCommand}" 
+                                  HorizontalAlignment="Right" 
+                                  Margin="0,15,0,0" 
+                                  Width="120" 
+                                  Height="35"/>
                         </Grid>
-                    </TabItem>
-                    <TabItem Header="Editovat Uživatele">
-                        <Grid Background="#FFE5E5E5">
+                    </Border>
+                </TabItem>
+                <TabItem Header="Nový uživatel">
+                    <Border BorderBrush="{StaticResource BorderBrush}" 
+                            BorderThickness="1" 
+                            CornerRadius="5" 
+                            Margin="10">
+                        <Grid Margin="15">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                            <TextBox IsEnabled="False" Grid.Row="0" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedUserMain.Id, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
-                            <Label Content="Jméno" Grid.Row="1"/>
-                            <TextBox  Grid.Row="2" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedUserMain.Name, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
-                            <Label Content="Admin?" Grid.Row="3"/>
-                            <TextBox  Grid.Row="4" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedUserMain.IsAdmin, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
-                            <Button Content="Editvat" Grid.Row="5" Command="{Binding EditUserCommand}"/>
+                            <TextBlock Text="Přidání nového uživatele" 
+                                     Grid.Row="0" 
+                                     Grid.ColumnSpan="2" 
+                                     FontSize="18" 
+                                     FontWeight="Bold" 
+                                     Margin="0,0,0,15"/>
+
+                            <Label Content="Jméno:" Grid.Row="1" Grid.Column="0" Margin="0,8,0,8"/>
+                            <TextBox Grid.Row="1" 
+                                   Grid.Column="1" 
+                                   Text="{Binding NameOfUser, UpdateSourceTrigger=PropertyChanged}" 
+                                   Margin="0,5"/>
+
+                            <Label Content="Heslo:" Grid.Row="2" Grid.Column="0" Margin="0,8,0,8"/>
+                            <TextBox Grid.Row="2" 
+                                   Grid.Column="1" 
+                                   Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" 
+                                   Margin="0,5"/>
+
+                            <Label Content="Admin:" Grid.Row="3" Grid.Column="0" Margin="0,8,0,8"/>
+                            <TextBox Grid.Row="3" 
+                                   Grid.Column="1" 
+                                   Text="{Binding IsAdmin, UpdateSourceTrigger=PropertyChanged}" 
+                                   Margin="0,5"/>
+
+                            <Button Content="Přidat uživatele" 
+                                  Grid.Row="4" 
+                                  Grid.Column="1" 
+                                  Command="{Binding InsertUserCommand}" 
+                                  HorizontalAlignment="Right" 
+                                  Margin="0,15,0,0" 
+                                  Width="120" 
+                                  Height="35"/>
                         </Grid>
-                    </TabItem>
-                    <TabItem Header="Editovat Knížku">
-                        <Grid Background="#FFE5E5E5">
+                    </Border>
+                </TabItem>
+                <TabItem Header="Nová výpůjčka">
+                    <Border BorderBrush="{StaticResource BorderBrush}" 
+                            BorderThickness="1" 
+                            CornerRadius="5" 
+                            Margin="10">
+                        <Grid Margin="15">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="200"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="200"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBox IsEnabled="False" Grid.Row="0" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedBookMain.Id, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
-                            <Label Content="Jméno" Grid.Row="1"/>
-                            <TextBox  Grid.Row="2" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedBookMain.Name, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
-                            <Label Content="Autor" Grid.Row="3"/>
-                            <TextBox  Grid.Row="4" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedBookMain.Author, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
-                            <Label Content="Počet" Grid.Row="5"/>
-                            <TextBox  Grid.Row="6" HorizontalAlignment="Left"  Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SelectedBookMain.InStock, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="360"/>
-                            <Button Content="Editvat" Grid.Row="7" Command="{Binding EditBookCommand}"/>
+                            <TextBlock Text="Vytvoření nové výpůjčky" 
+                                     Grid.Row="0" 
+                                     FontSize="18" 
+                                     FontWeight="Bold" 
+                                     Margin="0,0,0,15"/>
+
+                            <Label Content="Vybrat uživatele:" Grid.Row="1" Margin="0,8,0,5"/>
+                            <ListView ItemsSource="{Binding UserModels}" 
+                                    x:Name="selectedUser" 
+                                    Grid.Row="2" 
+                                    SelectionChanged="ListView_SelectionChanged_Users" 
+                                    SelectedIndex="0" 
+                                    Margin="0,0,0,10">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}" Width="40"/>
+                                        <GridViewColumn Header="Jméno" DisplayMemberBinding="{Binding Name}" Width="Auto"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+
+                            <Label Content="Vybrat knihu:" Grid.Row="3" Margin="0,8,0,5"/>
+                            <ListView ItemsSource="{Binding BookModels}" 
+                                    x:Name="selectedBook" 
+                                    Grid.Row="4" 
+                                    SelectionChanged="ListView_SelectionChanged_Books" 
+                                    SelectedIndex="0" 
+                                    Margin="0,0,0,10">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="40"/>
+                                        <GridViewColumn Header="Název" DisplayMemberBinding="{Binding Name}" Width="180"/>
+                                        <GridViewColumn Header="Autor" DisplayMemberBinding="{Binding Author}" Width="180"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+
+                            <Label Content="Datum vypůjčení:" Grid.Row="5" Margin="0,8,0,5"/>
+                            <DatePicker Grid.Row="6" 
+                                      SelectedDate="{Binding Path=Lended, Mode=TwoWay, TargetNullValue={x:Static System:DateTime.Now}}" 
+                                      Margin="0,5"/>
+
+                            <Button Content="Vytvořit výpůjčku" 
+                                  Grid.Row="7" 
+                                  Command="{Binding InsertLendCommand}" 
+                                  HorizontalAlignment="Right" 
+                                  Margin="0,15,0,0" 
+                                  Width="120" 
+                                  Height="35"/>
                         </Grid>
-                    </TabItem>
-                </TabControl>
-            </TabItem>
-            <TabItem Header="Vložení knížky">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Label Content="Název knihy" Grid.Row="0"/>
-                    <TextBox Text="{Binding NameOfBook, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Grid.Row="1" Height="20" Margin="148,0,152,0"/>
-                    <Label Content="Jméno autora" Grid.Row="2"/>
-                    <TextBox TextWrapping="Wrap" Text="{Binding Author, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Height="20" Margin="148,0,152,0"/>
-                    <Label Content="Poček kusů" Grid.Row="4"/>
-                    <TextBox TextWrapping="Wrap"  Grid.Row="5" Text="{Binding InStock, UpdateSourceTrigger=PropertyChanged}" Height="20" Margin="148,0,152,0"/>
-                    <Button Content="Vložit" Grid.Row="6" Command="{Binding InsertBookCommand}"/>
-
-                </Grid>
-            </TabItem>
-            <TabItem Header="Vložení uživatele">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Label Content="Jméno" Grid.Row="0"/>
-                    <TextBox Text="{Binding NameOfUser, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Grid.Row="1" Height="20" Margin="148,0,152,0"/>
-                    <Label Content="Heslo" Grid.Row="2"/>
-                    <TextBox TextWrapping="Wrap" Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Height="20" Margin="148,0,152,0"/>
-                    <Label Content="Je admin?" Grid.Row="4"/>
-                    <TextBox TextWrapping="Wrap"  Grid.Row="5" Text="{Binding IsAdmin, UpdateSourceTrigger=PropertyChanged}" Height="20" Margin="148,0,152,0"/>
-                    <Button Content="Vložit" Grid.Row="6" Command="{Binding InsertUserCommand}"/>
-
-                </Grid>
-            </TabItem>
-            <TabItem Header="Vložení vložení výpůjčky">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                    </Grid.RowDefinitions>
-
-                    <Label Content="Kniha" Grid.Row="0"/>
-                    <ListView ItemsSource="{Binding UserModels}" x:Name="selectedUser" Grid.Row="1" SelectionChanged="ListView_SelectionChanged_Users" SelectedIndex="0">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}" Width="Auto"/>
-                                <GridViewColumn Header="Jméno" DisplayMemberBinding="{Binding Name}" Width="Auto"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <Label Content="Uživatel" Grid.Row="2"/>
-                    <ListView ItemsSource="{Binding BookModels}" x:Name="selectedBook" Grid.Row="3" SelectionChanged="ListView_SelectionChanged_Books" SelectedIndex="0">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="Auto"/>
-                                <GridViewColumn Header="Jméno" DisplayMemberBinding="{Binding Name}" Width="Auto"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <Label Content="Datum vypůjčení" Grid.Row="4"/>
-                    <DatePicker HorizontalAlignment="Center" SelectedDate="{Binding Path=Lended, Mode=TwoWay, TargetNullValue={x:Static System:DateTime.Now}}" Grid.Row="5" VerticalAlignment="Center"/>
-                    <Button Content="Vložit" Grid.Row="6" Command="{Binding InsertLendCommand}"/>
-
-                </Grid>
-            </TabItem>
-
-
-
-        </TabControl>
-
+                    </Border>
+                </TabItem>
+            </TabControl>
+        </Border>
     </Grid>
 </Window>
